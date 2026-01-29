@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
-from yt_dlp import YoutubeDL as ytdl 
+from flask import Flask, render_template, request, send_file
+import yt_dlp
+import os
 
 app = Flask(__name__)
 
@@ -9,15 +10,18 @@ def index():
 
 @app.route('/download', methods=['POST'])
 def download():
-    url = request.form['url']
-    ydl_opts = {'format': 'bestvideo/best'}
+    url = request.form.get('url')
+    # إعدادات التحميل لحفظ الملف باسم محدد
+    video_filename = 'video_downloaded.mp4'
+    ydl_opts = {
+        'outtmpl': video_filename,
+    }
+    
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([url])
+    
+    # إرسال الملف المحمل من السيرفر إلى متصفحك مباشرة
+    return send_file(video_filename, as_attachment=True)
 
-    try:
-        with ytdl(ydl_opts) as ydl:
-            ydl.download([url])
-        return "تم التحميل بنجاح"
-    except Exception as e:
-        return f"حدث خطأ في التحميل: {str(e)}"
-
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run()
