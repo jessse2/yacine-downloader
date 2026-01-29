@@ -22,6 +22,10 @@ def download():
     
     # إرسال الملف المحمل من السيرفر إلى متصفحك مباشرة
     return send_file(video_filename, as_attachment=True)
+    unique_id = uuid.uuid4().hex
+    filename = f"video_{unique_id}.mp4"
+    filepath = os.path.join(DOWNLOAD_FOLDER, filename)
 
 if __name__ == "__main__":
     app.run()
+
