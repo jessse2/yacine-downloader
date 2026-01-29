@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, send_file
 import yt_dlp
 import os
+import uuid
 
 app = Flask(__name__)
 
@@ -11,21 +12,25 @@ def index():
 @app.route('/download', methods=['POST'])
 def download():
     url = request.form.get('url')
-    # إعدادات التحميل لحفظ الملف باسم محدد
-    video_filename = 'video_downloaded.mp4'
+    
+    # 1. توليد اسم فريد فوراً قبل أي شيء
+    unique_filename = f"video_{uuid.uuid4().hex}.mp4"
+    
+    # 2. إعدادات التحميل بالاسم الجديد
     ydl_opts = {
-        'outtmpl': video_filename,
+        'outtmpl': unique_filename,
     }
     
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
-    
-    # إرسال الملف المحمل من السيرفر إلى متصفحك مباشرة
-    return send_file(video_filename, as_attachment=True)
-    unique_id = uuid.uuid4().hex
-    filename = f"video_{unique_id}.mp4"
-    filepath = os.path.join(DOWNLOAD_FOLDER, filename)
+    try:
+        # 3. تحميل الفيديو بالاسم الفريد
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+        
+        # 4. إرسال الملف الفريد للمستخدم
+        return send_file(unique_filename, as_attachment=True)
+    except Exception as e:
+        return f"خطأ: {str(e)}"
 
 if __name__ == "__main__":
-    app.run()
-
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
