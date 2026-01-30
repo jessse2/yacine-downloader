@@ -27,10 +27,15 @@ def download():
             ydl.download([url])
         
         # 4. إرسال الملف الفريد للمستخدم
-        return send_file(unique_filename, as_attachment=True)
+        response = send_file(unique_filename, as_attachment=True)
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
     except Exception as e:
         return f"خطأ: {str(e)}"
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
