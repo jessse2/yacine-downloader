@@ -1,5 +1,5 @@
-body {
-    background-image: url(//https://c4.wallpaperflare.com/wallpaper/632/790/513/digital-digital-art-artwork-city-lights-hd-wallpaper-thumb.jpg);
+body 
+    background: linear-gradient(blue,rgb(13, 13, 58));
     color: #ffffff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
@@ -54,5 +54,6 @@ button:hover {
 button:active {
     transform: scale(0.98);
 }
+
 
 
