@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(rgb(73, 20, 122),rgb(13, 13, 58));
+    background-image: url(https://github.com/jessse2/yacine-downloader/blob/main/static/css/wallpaperflare.com_wallpaper%20(1).jpg);
     color: #ffffff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
@@ -54,6 +54,7 @@ button:hover {
 button:active {
     transform: scale(0.98);
 }
+
 
 
 
